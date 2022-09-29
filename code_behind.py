@@ -21,7 +21,7 @@ class Player:
     if attack_name not in self.attack_dict:
       return logger.debug("That attack it's not available!")
     attack_damage = self.attack_dict[attack_name][0]
-    logger.info(f"{self.name} dealt {attack_damage} of damage to {enemy.type}!")
+    logger.info(f"{self.name}'s {attack_name} dealt {attack_damage} of damage to {enemy.type}.")
     enemy.lose_hp(attack_damage)
 
   def lose_hp(self, attacker_damage):
@@ -46,7 +46,7 @@ class Monster:
     if attack_name not in self.attack_dict:
       return logger.debug("That attack it's not available!")
     attack_damage = self.attack_dict[attack_name][0]
-    logger.info(f"{self.type} dealt {attack_damage} of damage to {enemy.name}!")
+    logger.info(f"{self.type}'s {attack_name} dealt {attack_damage} of damage to {enemy.name}.")
     enemy.lose_hp(attack_damage)
 
   def lose_hp(self, attacker_damage):
@@ -61,5 +61,15 @@ class Monster:
     logger.info(f"{self.type} died!")
 
 
-john = Player('John', 'Warrior', 15, {'Cut': [3]})
-slime = Monster('Slime', 5, {'Tackle': [1]})
+def player_actions(player, enemy):
+  print("\n1 - Attack")
+  choice = int(input("\nWhat'll you do? "))
+  if choice == 1:
+    attack_string = "\n"
+    attack_list = [x for x in player.attack_dict.keys()]
+    for i in range(len(player.attack_dict)):
+      attack_string += f"{i+1} - {attack_list[i]} | "
+    print(attack_string)
+    attack_choice = int(input(f"\nWhat attack will you choose? ")) - 1
+    print("")
+    player.attack(attack_list[attack_choice], enemy)
