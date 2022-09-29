@@ -1,5 +1,6 @@
 import logging
 import sys
+from random import randrange, randint
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -20,7 +21,7 @@ class Player:
   def attack(self, attack_name, enemy):
     if attack_name not in self.attack_dict:
       return logger.debug("That attack it's not available!")
-    attack_damage = self.attack_dict[attack_name][0]
+    attack_damage = randint(self.attack_dict[attack_name][0][0], self.attack_dict[attack_name][0][1])
     logger.info(f"{self.name}'s {attack_name} dealt {attack_damage} of damage to {enemy.type}.")
     enemy.lose_hp(attack_damage)
 
@@ -35,6 +36,7 @@ class Player:
     self.dead = True
     logger.info(f"{self.name} died!")
 
+
 class Monster:
   def __init__(self, type, life, attack_dict):
     self.type = type
@@ -45,7 +47,7 @@ class Monster:
   def attack(self, attack_name, enemy):
     if attack_name not in self.attack_dict:
       return logger.debug("That attack it's not available!")
-    attack_damage = self.attack_dict[attack_name][0]
+    attack_damage = randint(self.attack_dict[attack_name][0][0], self.attack_dict[attack_name][0][1])
     logger.info(f"{self.type}'s {attack_name} dealt {attack_damage} of damage to {enemy.name}.")
     enemy.lose_hp(attack_damage)
 
@@ -73,3 +75,8 @@ def player_actions(player, enemy):
     attack_choice = int(input(f"\nWhat attack will you choose? ")) - 1
     print("")
     player.attack(attack_list[attack_choice], enemy)
+
+
+def monster_actions(monster, player):
+  attack_list = [x for x in monster.attack_dict.keys()]
+  monster.attack(attack_list[randrange(len(monster.attack_dict))], player)
