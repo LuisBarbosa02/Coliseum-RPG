@@ -30,7 +30,7 @@ class Player:
     if self.life <= 0:
       self.life = 0
       return self.die()
-    logger.info(f"{self.name} life: {self.life}")
+    logger.info(f"{self.name}'s life: {self.life}")
   
   def die(self):
     self.dead = True
@@ -56,7 +56,7 @@ class Monster:
     if self.life <= 0:
       self.life = 0
       return self.die()
-    logger.info(f"{self.type} life: {self.life}")
+    logger.info(f"{self.type}'s life: {self.life}")
   
   def die(self):
     self.dead = True
@@ -64,15 +64,20 @@ class Monster:
 
 
 def player_actions(player, enemy):
-  print("\n1 - Attack")
-  choice = int(input("\nWhat'll you do? "))
+  print("\n[ 1: Attack ]")
+  choice = int(input("\nThis is what'll do: "))
   if choice == 1:
     attack_string = "\n"
     attack_list = [x for x in player.attack_dict.keys()]
     for i in range(len(player.attack_dict)):
-      attack_string += f"{i+1} - {attack_list[i]} | "
+      if i == 0:
+        attack_string += f"[ {i+1}: {attack_list[i]} "
+      elif i == len(player.attack_dict) - 1:
+        attack_string += f" {i+1}: {attack_list[i]} ]"
+      else:
+        attack_string += f"| {i+1}: {attack_list[i]} |"
     print(attack_string)
-    attack_choice = int(input(f"\nWhat attack will you choose? ")) - 1
+    attack_choice = int(input(f"\nI'll attack it with: ")) - 1
     print("")
     player.attack(attack_list[attack_choice], enemy)
 
